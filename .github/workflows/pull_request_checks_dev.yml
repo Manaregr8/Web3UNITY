@@ -1,0 +1,22 @@
+name: Pull Request Checks
+
+on:
+  pull_request:
+    branches:
+      - dev
+    types:
+      - labeled
+      - ready_for_review
+
+jobs:
+  web3_tests:
+    name: Web3 tests 🕸
+    if: ${{ github.event.action == 'ready_for_review' || github.event.label.name == 'ready-to-merge'}}
+    uses: ChainSafe/web3.unity/.github/workflows/test.yaml@main
+  analyze_code:
+    name: Analyze 🧐
+    if: ${{ github.event.action == 'ready_for_review' || github.event.label.name == 'ready-to-merge'}}
+    uses: ChainSafe/web3.unity/.github/workflows/codeql.yml@main
+  documentation_check:
+    name: Documentation Check 📚
+    uses: ChainSafe/web3.unity/.github/workflows/documentation_check.yml@main
